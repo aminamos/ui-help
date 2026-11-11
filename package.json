@@ -1,0 +1,19 @@
+{
+  "name": "ui-help",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "UI Help — 24/7 unemployment filing prep for all 50 states + DC/PR/VI. Pre-login build: signup, weekly intake, approval, and queue up to the state login page.",
+  "scripts": {
+    "start": "node server.mjs",
+    "check": "node worker/prelogin-check.mjs",
+    "check:mn": "node worker/prelogin-check.mjs MN",
+    "states": "node scripts/generate-states.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "optionalDependencies": {
+    "playwright": "^1.49.0"
+  }
+}

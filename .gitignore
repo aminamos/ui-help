@@ -1,0 +1,4 @@
+node_modules/
+data/db.json
+worker/*-login.png
+.DS_Store

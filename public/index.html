@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UI Help · File on your time — all 50 states</title>
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <div class="brand"><span class="brand-mark">UI</span> Help <span class="brand-state" id="brandState">All 50 states + DC/PR/VI</span></div>
+    <div id="mnStatus" class="status-pill">Checking state hours…</div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <h1>File on your time.<br>We submit in theirs.</h1>
+    <p class="lede">State unemployment sites keep their own hours — Minnesota, for one, is only open Sunday–Friday, 6 a.m.–8 p.m. Central. UI Help takes your weekly answers 24/7, texts or emails you the exact filing for your approval, and queues it for the next window your state is open.</p>
+    <p class="hero-note">Pre-login build: everything works up to your state’s login page, in all 50 states plus DC, Puerto Rico, and the U.S. Virgin Islands. We never ask for your Social Security number or your state password on this site.</p>
+    <label class="state-picker">Your state
+      <select id="stateSelect"><option value="MN">Minnesota</option></select>
+    </label>
+    <p id="stateMeta" class="small"></p>
+    <div id="storageWarn" class="warn hidden">Warning: this browser could not save your session locally, so keep this tab open. Your account and filings are saved on the server.</div>
+  </section>
+
+  <section class="card" id="step1">
+    <p class="step-tag">Step 1</p>
+    <h2>Create your UI Help account</h2>
+    <p>This account is only for UI Help. It is not your state account.</p>
+    <form id="signupForm" class="grid-form">
+      <label>Full name <input name="name" required autocomplete="name"></label>
+      <label>Email <input name="email" type="email" required autocomplete="email"></label>
+      <label>State <select name="state" id="signupState"><option value="MN">Minnesota</option></select></label>
+      <label>Mobile phone (for texts) <input name="phone" type="tel" autocomplete="tel" placeholder="612-555-0100"></label>
+      <label>Password for UI Help <input name="password" type="password" required autocomplete="new-password" minlength="8" placeholder="8+ characters — never your SSN"></label>
+      <label>How should we ask for your approval?
+        <select name="contactPref"><option value="email">Email</option><option value="text">Text message</option><option value="both">Both</option></select>
+      </label>
+      <div class="checks">
+        <label><input type="checkbox" name="consentEmail"> Email me for approval before any filing</label>
+        <label><input type="checkbox" name="consentText"> Text me for approval before any filing</label>
+      </div>
+      <button type="submit">Create account</button>
+      <p id="signupMsg" class="msg" role="status"></p>
+    </form>
+    <div class="lookup">
+      <p>Already signed up?</p>
+      <form id="lookupForm"><input name="email" type="email" placeholder="you@example.com" required> <button type="submit" class="secondary">Load my filings</button></form>
+    </div>
+  </section>
+
+  <section class="card" id="step2">
+    <p class="step-tag">Step 2</p>
+    <h2>Weekly check-in — anytime, even at 2 a.m.</h2>
+    <p>Answer for the week you are claiming. You can do this whenever it suits you; the state window no longer decides when you do paperwork.</p>
+    <form id="weeklyForm" class="grid-form">
+      <label>Week ending (Saturday) <input name="weekEnd" type="date" required></label>
+      <label>Did you work this week?
+        <select name="worked"><option value="">Choose…</option><option value="yes">Yes</option><option value="no">No</option></select>
+      </label>
+      <label>Gross earnings this week ($) <input name="earnings" type="number" min="0" step="0.01" value="0"></label>
+      <label>Employer (if you worked) <input name="employer"></label>
+      <label>Were you able to work and available for work?
+        <select name="ableAvailable"><option value="yes">Yes</option><option value="no">No</option></select>
+      </label>
+      <label>Did you refuse any work or an interview?
+        <select name="refusedWork"><option value="no">No</option><option value="yes">Yes</option></select>
+      </label>
+      <label>How many employers did you contact? <input name="jobContacts" type="number" min="0" value="0"></label>
+      <label>Anything else we should know? <input name="notes" placeholder="Optional"></label>
+      <button type="submit">Save &amp; send me the approval request</button>
+      <p id="weeklyMsg" class="msg" role="status"></p>
+    </form>
+  </section>
+
+  <section class="card" id="step3">
+    <p class="step-tag">Step 3</p>
+    <h2>Review &amp; approve — nothing files without your yes</h2>
+    <p>After step 2 we prepare the exact text/email below. Approving queues the filing. Declining files nothing.</p>
+    <div id="inbox"><p class="empty">Your approval inbox is empty. Complete steps 1–2 to see a request here.</p></div>
+    <div id="filings"></div>
+  </section>
+
+  <section class="card" id="step4">
+    <p class="step-tag">Step 4</p>
+    <h2 id="step4Title">Queued for your state — stopping at login for now</h2>
+    <p id="step4Text">Approved filings wait here for your state’s next open window. In this build the runner checks the real login page and stops there. Secure state login comes next, and it will never be done through chat.</p>
+    <button id="checkBtn" type="button">Check my state’s login page now</button>
+    <pre id="checkOut" class="check-out">Not checked yet.</pre>
+    <p class="small">Command-line version: <code>npm run check -- CA</code> (uses Playwright when installed; saves <code>worker/&lt;state&gt;-login.png</code>). <code>npm run check:mn</code> still works for Minnesota.</p>
+  </section>
+
+  <section class="card states">
+    <h2>All 50 states, plus DC, Puerto Rico &amp; the Virgin Islands.</h2>
+    <p class="small">Every login and info link below came from an official state source. Hours are shown only where the state publishes them — we never guess. Full table: <code>STATES.md</code>.</p>
+    <div id="stateList"></div>
+  </section>
+
+  <section class="safety">
+    <h2>What we will never do here</h2>
+    <p>Never type your Social Security number or state account password into UI Help’s signup, this chat, or any approval text. In this build, no filing is submitted to any state at all — approved work stops at the login page, on purpose.</p>
+  </section>
+</main>
+<footer class="wrap foot">UI Help is a private helper, not a state agency and not legal advice. Pick your state above for its official information and login links.</footer>
+<script src="/app.js"></script>
+</body>
+</html>
